@@ -14,7 +14,7 @@ class UserController extends Controller
     public function show($id, User $user)
     {
         $user = $user
-            ->select('users.id', 'users.name', 'users.avatar')
+            ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->find($id);
        
         if (!empty($user)) {

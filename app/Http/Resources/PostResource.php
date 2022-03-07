@@ -18,11 +18,11 @@ class PostResource extends JsonResource
             'id' => $this->id ?? '',
             'content' => $this->content ?? '',
             'count' => $this->count ?? 0,
-            'url_image' =>  asset('storage/images/posts/' . $this->url_image ?? ''),
-            'created' => $this->created_at ?? '',
+            'url_image' => $this->url_image ? asset('storage/images/posts/' . $this->url_image ?? '') : '',
+            'created_at' => $this->created_at ?? '',
             'user_id' => $this->user_id ?? '',
             'name' => $this->name ?? '',
-            'avatar' => asset('storage/images/avatar/' . $this->avatar ?? ''),
+            'avatar' => $this->avatar ? asset('storage/images/avatar/' . $this->avatar ?? '') : '',
         ];
     }
 }

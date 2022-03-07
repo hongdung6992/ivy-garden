@@ -17,7 +17,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id ?? '',
             'name' => $this->name ?? '',
-            'avatar' => asset('storage/images/avatar/' . $this->avatar ?? ''),
+            'avatar' => $this->avatar ? asset('storage/images/avatar/' . $this->avatar ?? '') : '',
+            'email' => $this->email ?? '',
         ];
     }
 }

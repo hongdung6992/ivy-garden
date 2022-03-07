@@ -15,18 +15,20 @@ class PostController extends Controller
 {
     public function index(Request $request, Post $post)
     {
-        $params = $request->input();
         $posts = $post
             ->select('posts.id', 'posts.content', 'posts.count', 'posts.url_image', 'posts.created_at', 'users.id AS user_id', 'users.name', 'users.avatar')
             ->leftJoin('users', 'posts.user_id', '=', 'users.id');
-        $category_id = $params['category_id'] ?? 0;
-        if(!empty($params['category_id'])) {
+        $category_id = $request->category_id ?? 0;
+        if(!empty($request->category_id)) {
             $posts->join('category_post', function ($join) use ($category_id) {
                 $join->on('posts.id', '=', 'category_post.post_id')
                 ->where('category_post.category_id', '=', $category_id);
             })->join('categories', 'categories.id', '=', 'category_post.category_id');
         }
-        $posts = $posts->paginate($params['per_page'] ?? 3);
+        if (!empty($request->user_id)) {
+            $posts->where('posts.user_id', $request->user_id)->orderBy('created_at', 'desc');
+        }
+        $posts = $posts->paginate($request->per_page ?? 3);
         $posts = PostResource::collection($posts);
         return response()->json($posts, Response::HTTP_OK);
     }
