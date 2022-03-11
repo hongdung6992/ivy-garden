@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -28,7 +29,10 @@ class PostController extends Controller
         if (!empty($request->user_id)) {
             $posts->where('posts.user_id', $request->user_id)->orderBy('created_at', 'desc');
         }
-        $posts = $posts->paginate($request->per_page ?? 3);
+        if (!empty($request->content)) {
+            $posts = $posts->where('posts.content', 'LIKE', "%{$request->content}%");
+        }
+        $posts = $posts->orderBy('created_at', 'DESC')->paginate($request->per_page ?? 3);
         $posts = PostResource::collection($posts);
         return response()->json($posts, Response::HTTP_OK);
     }
@@ -52,5 +56,34 @@ class PostController extends Controller
         ];
         
         return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function create(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $request->validate([
+                'content' => ['required']
+            ]);
+
+            $data = $request->except(['url_image']);
+            if ($request->url_image) {
+                $url_image = $request->file('url_image');
+                $filename = uniqid() .  '.' .  $url_image->getClientOriginalExtension();
+                Image::make($url_image)->resize(300, 300)->save(public_path('storage/images/posts/' . $filename));
+                $data['url_image'] = $filename;
+            }
+            $data['user_id'] = auth()->user()->id;
+            $post = Post::create($data);
+            $post->categories()->attach($request->categories ?? []);
+            DB::commit();
+            return response()->json([
+                'status' => 'Updated successfully!',
+                'post' => new PostResource($post)
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['message' => $th->getMessage()], 400);
+        }
     }
 }
