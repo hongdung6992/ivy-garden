@@ -14,6 +14,11 @@ class CommentResource extends JsonResource
      */
     public function toArray($request)
     {
+        if (file_exists('storage/images/avatar/' . $this->avatar ?? '')) {
+            $avatar = asset('storage/images/avatar/' . $this->avatar ?? '');
+        } else {
+            $avatar = '';
+        }
         return [
             'id' => $this->id ?? '',
             'comment' => $this->comment ?? '',
@@ -21,7 +26,7 @@ class CommentResource extends JsonResource
             'user_id' => $this->user_id ?? 0,
             'post_id' => $this->post_id ?? 0,
             'name' => $this->name,
-            'avatar' => $this->avatar ? asset('storage/images/avatar/' . $this->avatar ?? '') : ''
+            'avatar' => $this->avatar ? $avatar : ''
         ];
     }
 }

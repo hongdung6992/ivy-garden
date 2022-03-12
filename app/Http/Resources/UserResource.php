@@ -14,10 +14,15 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        if (file_exists('storage/images/avatar/' . $this->avatar ?? '')) {
+            $avatar = asset('storage/images/avatar/' . $this->avatar ?? '');
+        } else {
+            $avatar = '';
+        }
         return [
             'id' => $this->id ?? '',
             'name' => $this->name ?? '',
-            'avatar' => $this->avatar ? asset('storage/images/avatar/' . $this->avatar ?? '') : '',
+            'avatar' => $this->avatar ? $avatar : '',
             'email' => $this->email ?? '',
             'gender' => $this->gender ?? 1,
         ];
