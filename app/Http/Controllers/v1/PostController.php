@@ -27,12 +27,12 @@ class PostController extends Controller
             })->join('categories', 'categories.id', '=', 'category_post.category_id');
         }
         if (!empty($request->user_id)) {
-            $posts->where('posts.user_id', $request->user_id)->orderBy('created_at', 'desc');
+            $posts->where('posts.user_id', $request->user_id);
         }
         if (!empty($request->content)) {
             $posts = $posts->where('posts.content', 'LIKE', "%{$request->content}%");
         }
-        $posts = $posts->orderBy('created_at', 'DESC')->paginate($request->per_page ?? 3);
+        $posts = $posts->orderBy('id', 'DESC')->paginate($request->per_page ?? 3);
         $posts = PostResource::collection($posts);
         return response()->json($posts, Response::HTTP_OK);
     }

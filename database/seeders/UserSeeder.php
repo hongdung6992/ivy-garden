@@ -24,6 +24,14 @@ class UserSeeder extends Seeder
                 'created_at'    => Carbon::now(),
                 'updated_at'    => Carbon::now(),
                 'password'      => Hash::make('12345678'),
+            ],
+            [
+                'name'          => 'Nguyen Hong Dung',
+                'email'         => 'hongdung@gmail.com',
+                'avatar'        => 'avatar2.jpg',
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+                'password'      => Hash::make('12345678'),
             ]
         ];
         DB::table('users')->insert($users);

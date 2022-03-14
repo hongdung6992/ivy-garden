@@ -16,7 +16,7 @@ class CommentController extends Controller
         ->select('comments.id', 'comments.comment', 'comments.created_at', 'comments.post_id', 'comments.user_id', 'users.name', 'users.avatar')
         ->join('users', 'users.id', '=', 'comments.user_id')
         ->where('comments.post_id', $request->post_id ?? 0)
-        ->orderBy('created_at', 'ASC')
+        ->orderBy('id', 'ASC')
         ->get();
         $comments = CommentResource::collection($comments);
         return response()->json($comments, Response::HTTP_OK);

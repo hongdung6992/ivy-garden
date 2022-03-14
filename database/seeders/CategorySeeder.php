@@ -20,9 +20,6 @@ class CategorySeeder extends Seeder
                 'title' => 'Ảnh troll',
             ], 
             [
-                'title' => 'Cách gặp ma',
-            ], 
-            [
                 'title' => 'Clip funvl',
             ], 
             [
@@ -53,10 +50,7 @@ class CategorySeeder extends Seeder
                 'title' => 'Siêu nhân',
             ], 
             [
-                'title' => 'Video kinh dị',
-            ], 
-            [
-                'title' => 'Thánh cuồng',
+                'title' => 'Kinh dị',
             ], 
             [
                 'title' => 'Comment hài',
@@ -69,15 +63,6 @@ class CategorySeeder extends Seeder
             ], 
             [
                 'title' => 'Pháo hoa Tết',
-            ], 
-            [
-                'title' => 'Ji Suk Jin',
-            ], 
-            [
-                'title' => 'Cao Bá Hưng',
-            ], 
-            [
-                'title' => 'Hài Quang Thắng',
             ], 
             [
                 'title' => 'Xăm trổ',
